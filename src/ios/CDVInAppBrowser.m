@@ -39,12 +39,16 @@
 }
 @end
 
-@implementation CDVInAppBrowser
+@implementation CDVInAppBrowser {
+    NSMutableArray* _hookExtentions;
+}
 
 - (void)pluginInitialize
 {
     _previousStatusBarStyle = -1;
     _callbackIdPattern = nil;
+    _hookExtentions = [NSMutableArray array];
+    [_hookExtentions addObject:@"mp3"];
 }
 
 - (void)onReset
@@ -396,7 +400,7 @@
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
     }
 
-    return YES;
+    return ![_hookExtentions containsObject:url.pathExtension];
 }
 
 - (void)webViewDidStartLoad:(UIWebView*)theWebView
